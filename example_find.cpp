@@ -10,6 +10,7 @@ public:
 		return (3 <= x) && (x <= 8);
 	}
 };
+
 void example_find_if() {
 	list<int> my_list;
 	//fill list with values
