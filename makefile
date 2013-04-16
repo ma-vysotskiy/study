@@ -1,5 +1,5 @@
 
-SCR := func_objs
+SCR := main
 OBJDIR := obj
 
 CXX := g++
