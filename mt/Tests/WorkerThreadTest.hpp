@@ -7,6 +7,7 @@
 
 #ifndef WORKETTHREADTEST_HPP_
 #define WORKETTHREADTEST_HPP_
+
 #include <unistd.h>
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
@@ -49,6 +50,8 @@ TEST_F (WorkerThreadTest, simpleRun) {
 	worker2.startExecution();
 	while (!(complete1 && complete2)) {
 	}
+	worker1.join();
+	worker2.join();
 }
 
 #endif /* WORKETTHREADTEST_HPP_ */
