@@ -33,17 +33,17 @@ protected:
 	funcObject thread1;
 };
 
-//TEST_F(FixedThreadPoolTest, oneSyncThreadTest) {
-//	FixedThreadPool pool(1);
-//	controlVariable = 0;
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//
-//	pool.startExecution(Sync);
-//	EXPECT_EQ(controlVariable, 4);
-//}
+TEST_F(FixedThreadPoolTest, oneSyncThreadTest) {
+	FixedThreadPool pool(1);
+	controlVariable = 0;
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+
+	pool.startExecution(Sync);
+	EXPECT_EQ(controlVariable, 4);
+}
 
 TEST_F(FixedThreadPoolTest, twoSyncThreadTest) {
 	FixedThreadPool pool(2);
@@ -58,26 +58,26 @@ TEST_F(FixedThreadPoolTest, twoSyncThreadTest) {
 	EXPECT_EQ(controlVariable, 4);
 }
 
-//TEST_F(FixedThreadPoolTest, threeSyncThreadTest) {
-//	FixedThreadPool pool(3);
-//	controlVariable = 0;
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//
-//	pool.startExecution(Sync);
-//	EXPECT_EQ(controlVariable, 4);
-//}
-//
-//TEST_F(FixedThreadPoolTest, fiveSyncThreadTest) {
-//	FixedThreadPool pool(5);
-//	controlVariable = 0;
-//	pool.addTask(&thread1);
-//	pool.addTask(&thread1);
-//
-//	pool.startExecution(Sync);
-//	EXPECT_EQ(controlVariable, 2);
-//}
+TEST_F(FixedThreadPoolTest, threeSyncThreadTest) {
+	FixedThreadPool pool(3);
+	controlVariable = 0;
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+
+	pool.startExecution(Sync);
+	EXPECT_EQ(controlVariable, 4);
+}
+
+TEST_F(FixedThreadPoolTest, fiveSyncThreadTest) {
+	FixedThreadPool pool(5);
+	controlVariable = 0;
+	pool.addTask(&thread1);
+	pool.addTask(&thread1);
+
+	pool.startExecution(Sync);
+	EXPECT_EQ(controlVariable, 2);
+}
 
 #endif /* THREADPOOLBASETEST_HPP_ */

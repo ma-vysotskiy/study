@@ -30,7 +30,7 @@ public:
 		}
 		std::stringstream out;
 		out << i;
-		Log::err("startExecution " + out.str() + "\n");
+		Log::err("startExecution id=" + out.str() + "\n");
 		waitMutex.unlock();
 
 	}
@@ -41,7 +41,14 @@ public:
 		}
 		tasksMutex.lock();
 		if (func != nullptr) {
+			std::stringstream out;
+			std::stringstream tasksstr;
+			out << "id=" << i;
 			tasks.push_back(func);
+			tasksstr << "tasks " << tasks.size();
+			Log::err(
+					"\tworker " + out.str() + " add func\n\t" + tasksstr.str()
+							+ "\n");
 			totalTasksAccepted++;
 		}
 		tasksMutex.unlock();
@@ -65,39 +72,42 @@ private:
 		if ((currentState != JOINING) && (currentState != JOINED)) {
 			std::stringstream out;
 			currentState = st;
-			out << currentState;
-			Log::err("Currstate " + out.str() + "\n");
+			out << "worker id=" << i << " new state=" << st << "\n";
+			Log::err(out.str());
 		}
 		stateMutex.unlock();
 	}
 	static void worker(WorkerThread* obj) {
 		std::stringstream out;
-		out << obj->i;
+		out << "id=" << obj->i;
 		std::stringstream out2;
-				out2 << obj->i;
-		Log::err("\tworker started" + out.str() + "\n");
+		out2 << "id=" << obj->i;
+		Log::err("\tworker " + out.str() + " started\n");
 		do {
 			obj->setState(WAITING);
 			while (obj->tasks.empty()) {
 //				Log::err("\tworker waiting " + out.str() + "\n");
 //				obj->waitMutex.lock();
-				if (obj->currentState == JOINING) {
+				if (obj->currentState == JOINING && obj->tasks.empty()) {
 					goto exit;
 				}
 			}
-			Log::err("\tworker executing " + out.str() + "\n");
+			Log::err("\tworker " + out.str() + " executing\n");
 			obj->setState(EXECUTING);
+			obj->tasksMutex.lock();
 			funcObject* currentTask = *obj->tasks.begin();
+			obj->tasks.pop_front();
+			obj->tasksMutex.unlock();
 			(*currentTask)();
 			std::stringstream info;
-			out << obj->tasks.size() << ' ' << obj->currentState;
+			info << "tasks " << obj->tasks.size() << " currState "
+					<< obj->currentState;
 			Log::err(
-					"\tworker executed " + out.str() + " " + info.str()
+					"\tworker " + out.str() + " executed " + info.str()
 							+ " \n");
 			obj->totalTasksExecuted++;
-			obj->tasks.pop_front();
 		} while (!(obj->tasks.empty() && (obj->currentState == JOINING)));
-		exit: Log::err("\tworker " + out2.str() + " exited");
+		exit: Log::err("\tworker " + out2.str() + " exited\n");
 	}
 
 	int i;
