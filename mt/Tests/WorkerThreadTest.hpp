@@ -40,12 +40,11 @@ TEST_F (WorkerThreadTest, simpleRun) {
 		for(int i=0;i<30;i++) {
 			std::cout<<"b\n";
 			usleep(1000);
-//			boost::this_thread::sleep_for( dura );
 		}
 		complete2=1;
 	};
-	WorkerThread worker1(&thread1);
-	WorkerThread worker2(&thread2);
+	WorkerThread worker1(&thread1, 0);
+	WorkerThread worker2(&thread2, 1);
 	worker1.startExecution();
 	worker2.startExecution();
 	while (!(complete1 && complete2)) {
