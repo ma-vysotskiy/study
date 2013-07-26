@@ -68,14 +68,13 @@ private:
 		WAITING, EXECUTING, JOINING, JOINED
 	};
 	void setState(STATE st) {
-		stateMutex.lock();
+		boost::lock_guard<boost::mutex> stateLock(stateMutex);
 		if ((currentState != JOINING) && (currentState != JOINED)) {
 			std::stringstream out;
 			currentState = st;
 			out << "worker id=" << i << " new state=" << st << "\n";
 			Log::err(out.str());
 		}
-		stateMutex.unlock();
 	}
 	static void worker(WorkerThread* obj) {
 		std::stringstream out;
