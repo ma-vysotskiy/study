@@ -11,6 +11,8 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "Tests/WorkerThreadTest.hpp"
+#include "Tests/FixedThreadPoolTest.hpp"
+
 void foo1() {
 	for (int i = 0; i < 100; i++) {
 		std::cout << "foo1" << std::endl;
